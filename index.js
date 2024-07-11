@@ -31,7 +31,7 @@ app.post('/consumer', async ({ body }, res) => {
     const desc = new webrtc.RTCSessionDescription(sdp);
     await peer.setRemoteDescription(desc);
 
-    streams[roomId].getTracks().forEach(track => peer.addTrack(track, streams[roomId]));
+    streams[roomId]?.getTracks()?.forEach(track => peer?.addTrack(track, streams[roomId]));
     
     const answer = await peer.createAnswer();
     await peer.setLocalDescription(answer);
@@ -46,9 +46,9 @@ app.post('/broadcast', async ({ body }, res) => {
     const { sdp, roomId } = body;
 
     // Check if there is already a host for the given room ID
-    if (hosts[roomId]) {
-        return res.status(400).json({ error: 'Room already has a host' });
-    }
+    // if (hosts[roomId]) {
+    //     return res.status(400).json({ error: 'Room already has a host' });
+    // }
 
     const peer = new webrtc.RTCPeerConnection({
         iceServers: [

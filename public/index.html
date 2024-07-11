@@ -6,6 +6,11 @@
     <title>Broadcaster</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src='index.js'></script>
+    <style>
+        .control-button {
+            margin: 5px;
+        }
+    </style>
 </head>
 <body>
     <input type="text" id="roomId" placeholder="Enter Room ID">
@@ -13,5 +18,12 @@
     <select id="audioSource"></select>
     <button id='my-button'>Start Broadcast</button>
     <video autoplay id="video"></video>
+    <br>
+    <button class="control-button" id="mute-audio">Mute Audio</button>
+    <button class="control-button" id="unmute-audio">Unmute Audio</button>
+    <button class="control-button" id="stop-video">Stop Video</button>
+    <button class="control-button" id="resume-video">Resume Video</button>
+    <br>
+    <meter id="mic-meter" min="0" max="1" value="0" low="0.25" high="0.75" optimum="0.9"></meter>
 </body>
 </html>
