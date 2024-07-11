@@ -20,7 +20,8 @@ app.post('/consumer', async ({ body }, res) => {
         iceServers: [
             {
                 urls: 'stun:stun.stunprotocol.org'
-            }
+            },
+            { urls: 'turn:54.235.30.116:3478', username: 'admin', credential: 'pass@123' }
         ]
     });
 

@@ -50,11 +50,9 @@ function createPeer(roomId) {
     const peer = new RTCPeerConnection({
         iceServers: [
             {
-              urls: [
-                "stun:stun.l.google.com:19302",
-                "stun:global.stun.twilio.com:3478",
-              ],
+                urls: 'stun:stun.stunprotocol.org'
             },
+            { urls: 'turn:54.235.30.116:3478', username: 'admin', credential: 'pass@123' }
           ]
     });
     peer.onnegotiationneeded = () => handleNegotiationNeededEvent(peer, roomId);
