@@ -13,19 +13,24 @@ async function init() {
 
     const peer = createPeer(roomId);
     peer.addTransceiver("video", { direction: "recvonly" });
+    peer.addTransceiver("audio", { direction: "recvonly" });
 }
 
 function createPeer(roomId) {
     const peer = new RTCPeerConnection({
         iceServers: [
             {
-                urls: 'stun:stun.stunprotocol.org'
+                urls: [
+                    "stun:stun.l.google.com:19302",
+                    "stun:global.stun.twilio.com:3478",
+                  ],
             },
             { urls: 'turn:54.235.30.116:3478', username: 'admin', credential: 'pass@123' }
           ]
     });
     peer.ontrack = handleTrackEvent;
     peer.onnegotiationneeded = () => handleNegotiationNeededEvent(peer, roomId);
+
 
     return peer;
 }
