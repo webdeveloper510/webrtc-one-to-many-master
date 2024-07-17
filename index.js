@@ -2,10 +2,11 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const webrtc = require('wrtc');
+const cors = require('cors');
 
 let streams = {}; // Dictionary to store streams with room IDs
 let hosts = {};   // Dictionary to keep track of hosts by room IDs
-
+app.use(cors());
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
