@@ -19,14 +19,15 @@ app.post('/consumer', async ({ body }, res) => {
     
     const peer = new webrtc.RTCPeerConnection({
         iceServers: [
-            {
-                urls: [
-                    "stun:stun.l.google.com:19302",
-                    "stun:global.stun.twilio.com:3478",
-                  ],
-            },
-            { urls: 'turn:54.235.30.116:3478', username: 'admin', credential: 'pass@123' }
-        ]
+            // {
+            //     urls: [
+            //         "stun:stun.l.google.com:19302",
+            //         "stun:global.stun.twilio.com:3478",
+            //       ],
+            // },
+            { urls: 'turn:54.196.181.163:3478', username: 'admin', credential: 'pass@123' },
+            { urls: 'stun:54.196.181.163:3478', username: 'admin', credential: 'pass@123' },       
+           ]
     });
 
     const desc = new webrtc.RTCSessionDescription(sdp);
@@ -78,7 +79,26 @@ app.post('/broadcast', async ({ body }, res) => {
 
     res.json(payload);
 });
+app.post('/end', async ({ body }, res) => {
+    const { roomId } = body;
 
+    if (!hosts[roomId]) {
+        return res.status(404).json({ error: 'Room not found or no active host' });
+    }
+
+    hosts[roomId].close();
+    delete hosts[roomId];
+    delete streams[roomId];
+
+    res.json({ message: 'Stream ended' });
+});
+
+app.get('/status/:roomId', (req, res) => {
+    const { roomId } = req.params;
+    const isLive = !!hosts[roomId];
+
+    res.json({ roomId, isLive });
+});
 function handleTrackEvent(e, peer, roomId) {
     streams[roomId] = e.streams[0];
 }

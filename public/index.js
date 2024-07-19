@@ -20,6 +20,10 @@ window.onload = () => {
     document.getElementById('resume-video').onclick = () => {
         resumeVideo();
     }
+
+    document.getElementById('end-stream').onclick = () => {
+        endStream();
+    }
 }
 
 let stream;
@@ -75,14 +79,15 @@ async function init() {
 function createPeer(roomId) {
     const peer = new RTCPeerConnection({
         iceServers: [
-            {
-                urls: [
-                    "stun:stun.l.google.com:19302",
-                    "stun:global.stun.twilio.com:3478",
-                  ],
-            },
-            { urls: 'turn:54.235.30.116:3478', username: 'admin', credential: 'pass@123' }
-        ]
+            // {
+            //     urls: [
+            //         "stun:stun.l.google.com:19302",
+            //         "stun:global.stun.twilio.com:3478",
+            //       ],
+            // },
+            { urls: 'turn:54.196.181.163:3478', username: 'admin', credential: 'pass@123' },
+            { urls: 'stun:54.196.181.163:3478', username: 'admin', credential: 'pass@123' },       
+           ]
     });
 
     peer.onnegotiationneeded = () => handleNegotiationNeededEvent(peer, roomId);
@@ -147,6 +152,23 @@ function stopVideo() {
 
 function resumeVideo() {
     stream.getVideoTracks().forEach(track => track.enabled = true);
+}
+
+async function endStream() {
+    const roomId = document.getElementById('roomId').value;
+    if (!roomId) {
+        alert('Please enter a Room ID');
+        return;
+    }
+
+    try {
+        await axios.post('/end', { roomId });
+        alert('Stream ended');
+        window.location.reload()
+        
+    } catch (error) {
+        alert(`Error: ${error.response.data.error}`);
+    }
 }
 
 function setupMicMeter(stream) {
